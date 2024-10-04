@@ -8,6 +8,8 @@ $lname = $_SESSION['lname'];
 $uname = $_SESSION['uname'];
 $email = $_SESSION['email'];
 $vcode = $_SESSION['vcode'];
+$senderemail = $_SESSION['senderemail'];
+$senderpassword = $_SESSION['senderpassword'];
 
 //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
@@ -28,8 +30,8 @@ try {
     $mail->isSMTP();                                            //Send using SMTP
     $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'timonkisera10@gmail.com';                     //SMTP username
-    $mail->Password   = 'ivjrmwsvpdjykcuo';                               //SMTP password
+    $mail->Username   = $senderemail;                     //SMTP username
+    $mail->Password   = $senderpassword;                               //SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
     $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
@@ -55,7 +57,17 @@ try {
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
-    echo 'Message has been sent';
+    echo '
+    <script>
+        alert("Message has been sent");
+        window.location.href = "../../Pages/verify.php";
+    </script>
+    ';
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    echo '
+    <script>
+        alert("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        window.location.href = "../../Pages/verify.php";
+    </script>
+    ';
 }
